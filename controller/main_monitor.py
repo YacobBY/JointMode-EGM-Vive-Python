@@ -3,6 +3,7 @@ import pprint
 import time
 import os,sys
 import numpy as np
+import traceback
 
 controller=control_thread()
 try:
@@ -10,6 +11,8 @@ try:
     while True:
         if(controller.controller_except_flag):
             print("Exception occured in controller ...")
+            print(controller.exception)
+            traceback.print_tb(controller.exception.__traceback__)
             controller.stop()
             break
         print(controller.J)

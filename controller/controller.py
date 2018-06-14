@@ -7,7 +7,6 @@ import threading
 from math import sqrt
 import ABB120
 from math3D import *
-from pyquaternion import Quaternion
 
 class control_thread(threading.Thread):
     def __init__(self):
@@ -117,8 +116,9 @@ class control_thread(threading.Thread):
                     self.track_started=False
                     self.set_zero_offset()
                     self.egm.setOffset(self.tool_offset_X,self.tool_offset_Q)
-        except:
+        except Exception as e:
             self.controller_except_flag=True
+            self.exception=e
 
     def calculate_offset(self):
         H_tool,xyz,R,Q=ABB120.FK(self.J)
@@ -160,27 +160,21 @@ class control_thread(threading.Thread):
         new_tool=np.transpose(self.Rtr_home)
         Rtr_desired=self.Rcr;
         current_R=np.matmul(self.Rtr,new_tool)
-
         d_R=np.matmul(np.transpose(current_R),Rtr_desired)
+        d_aa_angle, d_aa_axis=angle_axis(d_R);
+        d_aa_small=rotation_matrix(d_aa_angle*self.p_gain_angle,np.matmul(np.transpose(self.Rtr),d_aa_axis));
+        d_q=q_from_R(d_aa_small)
 
-        #d_aa_angle, d_aa_axis=angle_axis(d_R);
-        #d_aa_small=rotation_matrix(d_aa_angle*p_gain_angle,np.matmul(np.transpose(self.Rtr),d_aa_axis));
-        #d_q=Quaternion(d_aa_small)
-
-        #print(d_q)
-        #print(type(d_q))
-
-        '''
         # SINGULARITY CHECK*********************
+        '''
+        Htr_desired=np.zeros((4,4))
+        Htr_desired[0:3,0:3]=np.matmul(Rtr_desired,np.transpose(new_tool))
 
-        Htr_desired[0:3,0:3]=np.matmul(Rtr_desired*np.transpose(new_tool))
-
-        Xrt_desired = Xcr_relative+Xtr_start
+        Xrt_desired = self.Xcr_relative+self.Xtr_start
         Htr_desired[0:3,0:3] = Xrt_desired
 
         IK_results = ABB120.IK(Htr_desired)
         IK_result=IK_results[0]
-
 
         if (IK_result):
             if (     (J[2]>J_max[2]) and (J_desired[2]>J_max[2])
@@ -199,6 +193,7 @@ class control_thread(threading.Thread):
                        or (J_desired[4]>J_max[4])
                        or (J_desired[4]<J_min[4])
                        ):
+                print( "OUT OF RANGE!!!" )
             else:
                 '''
         if True:
@@ -225,39 +220,36 @@ class control_thread(threading.Thread):
                 else:
                     self.tool_offset_X[2]=offset[2]
 
-                '''
-                if (d_q.w()>q_sat):
-                    self.tool_offset_Q[0]=q_sat
-                elif (d_q.w()<-q_sat):
-                    self.tool_offset_Q[0]=-q_sat
-                else:
-                    self.tool_offset_Q[0]=d_q.w()
 
-                if (d_q.x()>q_sat):
-                    self.tool_offset_Q[1]=q_sat
-                elif (d_q.x()<-q_sat):
-                    self.tool_offset_Q[1]=-q_sat
+                if (d_q[0]>self.q_sat):
+                    self.tool_offset_Q[0]=self.q_sat
+                elif (d_q[0]<-self.q_sat):
+                    self.tool_offset_Q[0]=-self.q_sat
                 else:
-                    self.tool_offset_Q[1]=d_q.x();
+                    self.tool_offset_Q[0]=d_q[0]
 
-                if (d_q.y()>q_sat):
-                    self.tool_offset_Q[2]=q_sat
-                elif (d_q.y()<-q_sat):
-                    self.tool_offset_Q[2]=-q_sat
+                if (d_q[1]>self.q_sat):
+                    self.tool_offset_Q[1]=self.q_sat
+                elif (d_q[1]<-self.q_sat):
+                    self.tool_offset_Q[1]=-self.q_sat
                 else:
-                    self.tool_offset_Q[2]=d_q.y()
+                    self.tool_offset_Q[1]=d_q[1]
 
-                if (d_q.z()>q_sat):
-                    self.tool_offset_Q[3]=q_sat
-                elif (d_q.z()<-q_sat):
-                    self.tool_offset_Q[3]=-q_sat
+                if (d_q[2]>self.q_sat):
+                    self.tool_offset_Q[2]=self.q_sat
+                elif (d_q[2]<-self.q_sat):
+                    self.tool_offset_Q[2]=-self.q_sat
                 else:
-                    self.tool_offset_Q[3]=d_q.z()
-                '''
+                    self.tool_offset_Q[2]=d_q[2]
 
+                if (d_q[3]>self.q_sat):
+                    self.tool_offset_Q[3]=self.q_sat
+                elif (d_q[3]<-self.q_sat):
+                    self.tool_offset_Q[3]=-self.q_sat
+                else:
+                    self.tool_offset_Q[3]=d_q[3]
         else:
             self.set_zero_offset()
-
 
     def set_zero_offset(self):
         self.tool_offset_X=[0,0,0]
