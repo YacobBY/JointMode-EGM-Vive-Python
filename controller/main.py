@@ -22,6 +22,12 @@ try:
         print(controller.Xcr)
         print("grip_button_pressed: ")
         print(controller.grip_button_pressed)
+        print("Controller Rotation matrix:")
+        print(controller.Rcr)
+        print("Desired H matrix:")
+        print(controller.Htr_desired)
+        print("Desired J:")
+        print(controller.Desired_J)
         time.sleep(0.1)
         os.system('cls')
 except:
