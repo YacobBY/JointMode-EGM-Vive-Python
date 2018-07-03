@@ -33,11 +33,10 @@ class control_thread(threading.Thread):
 
         self.command_J=[0,0,0,30,0,60]
 
-        self.p_gain=0.09
-        self.d_gain=0.00
+        #self.p_gain=0.09
+        #self.d_gain=0.00
 
-
-        self.J_offset_sat=1
+        self.J_offset_sat=40
 
         self.J_home=np.array([0, 0, 30, 0, 60, 0])
         self.J=self.J_home
@@ -134,27 +133,13 @@ class control_thread(threading.Thread):
         self.Rtr=H_tool[0:3,0:3]
         self.Xtr=xyz
 
-        #H_tool,xyz,R,Q=ABB120.FK(self.J_start)
-        #self.Xtr_start= xyz
-        #self.Xtr_relative=  self.Xtr-self.Xtr_start
-
-        #********************************************************************
-        #********************************************************************
         Htr_desired=np.eye(4)
-        #self.Htr_desired[0:3,0:3]=self.Rtr_home
         Htr_desired[0:3,0:3]=np.matmul(self.Rcr,self.Rtr_home)
-        #self.Htr_desired[0:3,0:3]=np.array([[0,0,1],
-        #                                    [1,0,0],
-        #                                    [0,1,0]])
         Xtr_desired = self.Xcr_relative + self.X_home
-        #Xtr_desired = self.X_home
         Htr_desired[0:3,3] = Xtr_desired
 
         IK_results = ABB120.IK(Htr_desired)
-        #print(Htr_desired)
-        #print(IK_results)
         if IK_results is not None:
-            #print("IK_results is not None")
             self.Desired_J=IK_results[0]
             self.command_J=self.check_joint_limits(self.Desired_J)
 
@@ -173,18 +158,18 @@ class control_thread(threading.Thread):
         if (J_desired[5]>self.J_max[5]): J_checked[5]=self.J[5]
         if (J_desired[5]<self.J_min[5]): J_checked[5]=self.J[5]
 
-        #if (self.command_J[0]-self.J[0])> self.J_offset_sat: J_checked[0]= self.J_offset_sat
-        #if (self.command_J[0]-self.J[0])<-self.J_offset_sat: J_checked[0]=-self.J_offset_sat
-        #if (self.command_J[1]-self.J[1])> self.J_offset_sat: J_checked[1]= self.J_offset_sat
-        #if (self.command_J[1]-self.J[1])<-self.J_offset_sat: J_checked[1]=-self.J_offset_sat
-        #if (self.command_J[2]-self.J[2])> self.J_offset_sat: J_checked[2]= self.J_offset_sat
-        #if (self.command_J[2]-self.J[2])<-self.J_offset_sat: J_checked[2]=-self.J_offset_sat
-        #if (self.command_J[3]-self.J[3])> self.J_offset_sat: J_checked[3]= self.J_offset_sat
-        #if (self.command_J[3]-self.J[3])<-self.J_offset_sat: J_checked[3]=-self.J_offset_sat
-        #if (self.command_J[4]-self.J[4])> self.J_offset_sat: J_checked[4]= self.J_offset_sat
-        #if (self.command_J[4]-self.J[4])<-self.J_offset_sat: J_checked[4]=-self.J_offset_sat
-        #if (self.command_J[5]-self.J[5])> self.J_offset_sat: J_checked[5]= self.J_offset_sat
-        #if (self.command_J[5]-self.J[5])<-self.J_offset_sat: J_checked[5]=-self.J_offset_sat
+        if (J_desired[0]-self.J[0])> self.J_offset_sat: J_checked[0]= self.J_offset_sat+self.J[0]
+        if (J_desired[0]-self.J[0])<-self.J_offset_sat: J_checked[0]=-self.J_offset_sat+self.J[0]
+        if (J_desired[1]-self.J[1])> self.J_offset_sat: J_checked[1]= self.J_offset_sat+self.J[1]
+        if (J_desired[1]-self.J[1])<-self.J_offset_sat: J_checked[1]=-self.J_offset_sat+self.J[1]
+        if (J_desired[2]-self.J[2])> self.J_offset_sat: J_checked[2]= self.J_offset_sat+self.J[2]
+        if (J_desired[2]-self.J[2])<-self.J_offset_sat: J_checked[2]=-self.J_offset_sat+self.J[2]
+        if (J_desired[3]-self.J[3])> self.J_offset_sat: J_checked[3]= self.J_offset_sat+self.J[3]
+        if (J_desired[3]-self.J[3])<-self.J_offset_sat: J_checked[3]=-self.J_offset_sat+self.J[3]
+        if (J_desired[4]-self.J[4])> self.J_offset_sat: J_checked[4]= self.J_offset_sat+self.J[4]
+        if (J_desired[4]-self.J[4])<-self.J_offset_sat: J_checked[4]=-self.J_offset_sat+self.J[4]
+        if (J_desired[5]-self.J[5])> self.J_offset_sat: J_checked[5]= self.J_offset_sat+self.J[5]
+        if (J_desired[5]-self.J[5])<-self.J_offset_sat: J_checked[5]=-self.J_offset_sat+self.J[5]
 
         return J_checked
 
