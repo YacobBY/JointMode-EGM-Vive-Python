@@ -17,8 +17,9 @@ Note: the code only works in Windows OS and Python 3 vc140 64x
 ``` 
 pip install pyopenvr
 ```
+3- Edit the "udp_connection_name" in the RAPID module "EGM_connection.mod".
 
-3 - Copy the RAPID module "EGM_connection.mod" to the ABB robot controller.
+4 - Copy the RAPID module "EGM_connection.mod" to the ABB robot controller.
 
 
 

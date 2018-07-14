@@ -38,8 +38,8 @@ TPWrite "EGM state: "\Num:=egmSt1;
 
 IF egmSt1 <= EGM_STATE_CONNECTED THEN
 
-EGMSetupUC ROB_1, egmID1, "default", "udpkaveh"\Joint ,\CommTimeout:=1000;
-!EGMSetupUC ROB_1, egmID1, "default", "udpkaveh"\Pose ,\CommTimeout:=1000;
+EGMSetupUC ROB_1, egmID1, "default", "udp_connection_name"\Joint ,\CommTimeout:=1000;
+!EGMSetupUC ROB_1, egmID1, "default", "udp_connection_name"\Pose ,\CommTimeout:=1000;
 
 ENDIF
 
