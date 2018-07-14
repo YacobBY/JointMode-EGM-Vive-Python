@@ -9,14 +9,26 @@ The package pyopenvr is used to receive position and orientation of an HTC Vive 
 
 ## Prerequisite steps:
 
+Note: the code only works in Windows OS and Python 3 vc140 64x
+
+1- Install SteamVR
+
+2 - Install pyopenvr: 
 ``` 
 pip install pyopenvr
 ```
 
-Note: the code only works in Windows OS and Python 3 vc140 64x
+3 - Copy the RAPID module "EGM_connection.mod" to the ABB robot controller.
+
+
 
 ## To run the code:
 
+1- Run "EGM_connection.mod" on the ABB robot controler
+
+2- Run SteamVR
+
+3- Run the python code:
 ```
 python main.py
 ```
