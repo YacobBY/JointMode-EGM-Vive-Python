@@ -1,7 +1,7 @@
 # Joint Mode EGM Vive for ABB IRB 120
 
 <p align="center">
-    <img src="https://github.com/kavehkamali/RobotPath/blob/master/demo.gif" width="500">
+    <img src="https://github.com/kavehkamali/JointMode-EGM-Vive-Python/blob/master/demo.gif" width="500">
 </p>
 
 This code uses OpenVR and EGM for real-time remote control of an ABB 120 robot. 
