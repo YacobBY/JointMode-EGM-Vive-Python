@@ -1,7 +1,0 @@
-﻿  robot_egm.cpp
-C:\Users\AN95540\Desktop\python EGM-HTC\EGM test\robot_egm.cpp(109): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-LINK : warning LNK4044: unrecognized option '/lboost_python3-vc140-mt-x64-1_66'; ignored
-LINK : warning LNK4044: unrecognized option '/llibprotobuf'; ignored
-LINK : warning LNK4044: unrecognized option '/lpython36'; ignored
-     Creating library C:/Users/AN95540/Desktop/python EGM-HTC/EGM test/build/Release/robot_egm.lib and object C:/Users/AN95540/Desktop/python EGM-HTC/EGM test/build/Release/robot_egm.exp
-  robot_egm.vcxproj -> C:\Users\AN95540\Desktop\python EGM-HTC\EGM test\build\Release\robot_egm.pyd

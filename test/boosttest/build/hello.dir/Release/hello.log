@@ -1,7 +1,0 @@
-﻿  Building Custom Rule C:/Users/AN95540/Desktop/python EGM-HTC/boosttest/CMakeLists.txt
-  CMake does not need to re-run because C:/Users/AN95540/Desktop/python EGM-HTC/boosttest/build/CMakeFiles/generate.stamp is up-to-date.
-  hello.cpp
-LINK : warning LNK4044: unrecognized option '/lboost_python3-vc140-mt-x64-1_66'; ignored
-LINK : warning LNK4044: unrecognized option '/lpython36'; ignored
-     Creating library C:/Users/AN95540/Desktop/python EGM-HTC/boosttest/build/Release/hello.lib and object C:/Users/AN95540/Desktop/python EGM-HTC/boosttest/build/Release/hello.exp
-  hello.vcxproj -> C:\Users\AN95540\Desktop\python EGM-HTC\boosttest\build\Release\hello.pyd
