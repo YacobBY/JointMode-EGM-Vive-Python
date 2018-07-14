@@ -13,6 +13,8 @@ The package pyopenvr is used to receive position and orientation of an HTC Vive 
 pip install pyopenvr
 ```
 
+Note: the code only works in Windows OS and Python 3 vc140 64x
+
 ## To run the code:
 
 ```
